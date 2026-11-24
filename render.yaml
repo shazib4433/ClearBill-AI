@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: clearbill-ai
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python database/seed_his_db.py --reset-audit
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.9
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_INGEST_MODEL
+        value: gemini-3.5-flash-lite
+      - key: GEMINI_FUSION_MODEL
+        value: gemini-4-hydrogen
